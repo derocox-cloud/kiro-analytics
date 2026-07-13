@@ -43,7 +43,7 @@ EventBridge (programación) → Step Functions (orquestación)
 ### Acceso AWS
 
 - Cuenta AWS con permisos para crear: Lambda, Step Functions, DynamoDB, S3, EventBridge, SNS, CloudFront, IAM roles, CloudWatch
-- Acceso al bucket de logs: `dev-logs-prompt-kiro-418295705477-us-east-1-an`
+- Acceso al bucket de logs: `<LOGS_BUCKET_NAME>`
 - Permisos de Bedrock para el modelo `us.anthropic.claude-haiku-4-5-20251001-v1:0`
 
 ---
@@ -90,10 +90,10 @@ Editar `infrastructure/app.py` con los valores de producción:
 ```python
 config = StackConfig(
     # Bucket donde están los logs de Kiro
-    logs_bucket="dev-logs-prompt-kiro-418295705477-us-east-1-an",
+    logs_bucket="<LOGS_BUCKET_NAME>",
 
     # Cuenta AWS de producción
-    account_id="418295705477",
+    account_id="<AWS_ACCOUNT_ID>",
     region="us-east-1",
 
     # Correos para notificaciones (1-10 destinatarios)
@@ -156,7 +156,7 @@ Si no aparece, habilitar desde la consola AWS → Bedrock → Model access.
 ### Paso 1: Bootstrap del entorno CDK (solo la primera vez)
 
 ```bash
-cdk bootstrap aws://418295705477/us-east-1
+cdk bootstrap aws://<AWS_ACCOUNT_ID>/us-east-1
 ```
 
 ### Paso 2: Sintetizar el template (verificar sin desplegar)
@@ -176,7 +176,7 @@ PYTHONPATH=. cdk deploy KiroAnalyticsPipeline --app "python3 infrastructure/app.
 CDK mostrará los cambios propuestos y pedirá confirmación. Recursos creados:
 
 - **DynamoDB**: `kiro-analytics-metrics` (on-demand, point-in-time recovery)
-- **S3**: `kiro-analytics-reports-418295705477-us-east-1` (versionado, lifecycle 90 días)
+- **S3**: `kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1` (versionado, lifecycle 90 días)
 - **Lambda**: 9 funciones (`kiro-analytics-*`)
 - **Step Functions**: `KiroAnalyticsPipeline-*`
 - **EventBridge**: 3 reglas (diario, semanal, mensual)
@@ -192,7 +192,7 @@ Después del despliegue, cada destinatario recibirá un correo de confirmación 
 
 ```bash
 aws s3 cp kiro-users-dev.csv \
-  s3://kiro-analytics-reports-418295705477-us-east-1/config/kiro-users-dev.csv
+  s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/config/kiro-users-dev.csv
 ```
 
 ### Paso 6: Verificar con ejecución manual
@@ -200,7 +200,7 @@ aws s3 cp kiro-users-dev.csv \
 ```bash
 # Ejecutar reporte diario
 aws stepfunctions start-execution \
-  --state-machine-arn arn:aws:states:us-east-1:418295705477:stateMachine:kiro-analytics-pipeline \
+  --state-machine-arn arn:aws:states:us-east-1:<AWS_ACCOUNT_ID>:stateMachine:kiro-analytics-pipeline \
   --input '{"period": "daily", "reference_date": "2026-06-03", "ai_analysis": true}'
 ```
 
@@ -209,10 +209,10 @@ Monitorear en la consola: Step Functions → Ejecuciones → verificar que todas
 Verificar resultados:
 ```bash
 # Debe mostrar HTML y CSV generados
-aws s3 ls s3://kiro-analytics-reports-418295705477-us-east-1/reports/
+aws s3 ls s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/reports/
 
 # Debe mostrar reportes publicados + index.html
-aws s3 ls s3://kiro-analytics-reports-418295705477-us-east-1/site/
+aws s3 ls s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/site/
 ```
 
 ---
@@ -235,7 +235,7 @@ No requiere intervención manual. Los reportes se publican automáticamente en e
 ### Vía AWS CLI
 
 ```bash
-STATE_MACHINE_ARN="arn:aws:states:us-east-1:418295705477:stateMachine:kiro-analytics-pipeline"
+STATE_MACHINE_ARN="arn:aws:states:us-east-1:<AWS_ACCOUNT_ID>:stateMachine:kiro-analytics-pipeline"
 
 # Reporte diario
 aws stepfunctions start-execution \
@@ -280,10 +280,10 @@ Después de ejecutar, verificar los resultados:
 
 ```bash
 # Verificar reportes generados
-aws s3 ls s3://kiro-analytics-reports-418295705477-us-east-1/reports/
+aws s3 ls s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/reports/
 
 # Verificar publicación en sitio
-aws s3 ls s3://kiro-analytics-reports-418295705477-us-east-1/site/
+aws s3 ls s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/site/
 ```
 
 ---
@@ -292,9 +292,9 @@ aws s3 ls s3://kiro-analytics-reports-418295705477-us-east-1/site/
 
 El sitio de reportes está protegido con autenticación HTTP Basic Auth.
 
-- **URL:** https://d1yducpxutmfec.cloudfront.net
-- **Usuario:** `kiroanalytics`
-- **Contraseña:** `K1r0@n$lyt1cs`
+- **URL:** `https://<CLOUDFRONT_DISTRIBUTION_ID>.cloudfront.net`
+- **Usuario:** Configurado durante el despliegue (ver parámetros del stack)
+- **Contraseña:** Configurada durante el despliegue (ver parámetros del stack)
 
 El sitio incluye:
 - Página índice con listado de todos los reportes por periodo
@@ -358,7 +358,7 @@ vi kiro-users-dev.csv
 
 # Subir nueva versión
 aws s3 cp kiro-users-dev.csv \
-  s3://kiro-analytics-reports-418295705477-us-east-1/config/kiro-users-dev.csv
+  s3://kiro-analytics-reports-<AWS_ACCOUNT_ID>-us-east-1/config/kiro-users-dev.csv
 ```
 
 La siguiente ejecución usará la versión actualizada automáticamente. No requiere redespliegue.
