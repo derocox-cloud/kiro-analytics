@@ -457,4 +457,4 @@ kiro-analytics/
 
 ## Licencia
 
-Uso interno — Solati.
+Uso interno.
