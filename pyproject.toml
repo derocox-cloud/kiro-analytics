@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kiro-analytics-pipeline"
+version = "0.1.0"
+description = "Pipeline serverless de análisis de uso de Kiro en AWS"
+requires-python = ">=3.9"
+dependencies = [
+    "boto3>=1.28.0",
+    "constructs>=10.0.0",
+]
+
+[project.optional-dependencies]
+cdk = [
+    "aws-cdk-lib>=2.100.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "hypothesis>=6.82.0",
+    "moto[all]>=4.2.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "infrastructure*"]
