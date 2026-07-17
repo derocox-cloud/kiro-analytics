@@ -51,6 +51,27 @@ EventBridge (scheduling) → Step Functions (orchestration)
 
 ---
 
+## Important: Kiro Subscription via AWS Console
+
+> ⚠️ **This solution is designed for Kiro subscriptions created and managed through the AWS Console.** If your team uses Kiro subscriptions provisioned via the AWS Management Console, the usage logs are stored in S3 buckets within your AWS account, which is what this pipeline reads from.
+
+### Enable Log Storage (Required)
+
+Before deploying this pipeline, you must enable log storage in the AWS Console under your Kiro subscription settings:
+
+1. **Prompt Logging** — Log Kiro prompts along with metadata. This captures prompt content, intent, model used, and response metadata into S3.
+
+2. **Kiro User Activity Report** — Collect user activity metrics and create daily reports in an S3 bucket. This generates per-user CSV reports with credit consumption, conversations, messages, and other usage metrics.
+
+Both settings must be enabled for the pipeline to have data to process. Once activated, logs will start accumulating in your S3 bucket (format: `dev-logs-prompt-kiro-<ACCOUNT_ID>-<REGION>-an`).
+
+To enable them:
+- Go to **AWS Console → Kiro → Settings → Logging**
+- Toggle on both **Prompt logging** and **User activity report**
+- Confirm the S3 bucket where logs will be stored
+
+---
+
 ## Prerequisites
 
 ### Software
