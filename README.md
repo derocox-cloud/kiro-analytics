@@ -2,6 +2,8 @@
 
 Serverless analytics pipeline for [Kiro](https://kiro.dev) (AI coding assistant) usage tracking, deployed on AWS. Generates weekly and monthly team activity reports including credit metrics, interactions, prompt categorization, and AI analysis with Amazon Bedrock.
 
+![Sample Report Preview](examples/sample-report-preview.png)
+
 ## Architecture
 
 ```
