@@ -1,4 +1,4 @@
-# Kiro Analytics Pipeline
+# Kiro Usage Analytics
 
 <p align="center">
   <img src="examples/sample-report-preview.png" alt="Kiro Analytics" width="600">

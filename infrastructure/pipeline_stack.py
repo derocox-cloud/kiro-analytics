@@ -258,7 +258,7 @@ class PipelineStack(Stack):
             self,
             "NotificacionesPipeline",
             topic_name="kiro-analytics-notifications",
-            display_name="Kiro Analytics Pipeline - Notificaciones",
+            display_name="Kiro Usage Analytics - Notificaciones",
         )
 
         # Suscribir destinatarios de correo electrónico configurados

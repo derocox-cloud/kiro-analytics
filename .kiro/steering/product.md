@@ -4,7 +4,7 @@ inclusion: always
 
 # Product
 
-Kiro Analytics Pipeline is a serverless AWS pipeline that generates usage analytics reports for teams using Kiro (the AI coding assistant) via Kiro subscriptions provisioned through the AWS Console.
+Kiro Usage Analytics is a serverless AWS pipeline that generates usage analytics reports for teams using Kiro (the AI coding assistant) via Kiro subscriptions provisioned through the AWS Console.
 
 ## What it does
 

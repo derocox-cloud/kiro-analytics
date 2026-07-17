@@ -1,4 +1,4 @@
-# Kiro Analytics Pipeline
+# Kiro Usage Analytics
 
 Pipeline de analítica serverless para el seguimiento de uso de [Kiro](https://kiro.dev) (asistente de codificación con IA), desplegado en AWS. Genera reportes semanales y mensuales de actividad del equipo incluyendo métricas de créditos, interacciones, categorización de prompts y análisis con IA mediante Amazon Bedrock.
 
