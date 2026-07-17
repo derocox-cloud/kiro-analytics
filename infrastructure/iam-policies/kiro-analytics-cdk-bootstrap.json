@@ -1,0 +1,81 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CDKBootstrapECR",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:CreateRepository",
+        "ecr:DeleteRepository",
+        "ecr:DescribeRepositories",
+        "ecr:SetRepositoryPolicy",
+        "ecr:GetRepositoryPolicy",
+        "ecr:ListTagsForResource",
+        "ecr:TagResource",
+        "ecr:PutLifecyclePolicy",
+        "ecr:GetLifecyclePolicy"
+      ],
+      "Resource": "arn:aws:ecr:us-east-1:123456789012:repository/cdk-hnb659fds-*"
+    },
+    {
+      "Sid": "CDKBootstrapSSM",
+      "Effect": "Allow",
+      "Action": [
+        "ssm:PutParameter",
+        "ssm:GetParameter",
+        "ssm:GetParameters",
+        "ssm:DeleteParameter",
+        "ssm:DescribeParameters",
+        "ssm:ListTagsForResource",
+        "ssm:AddTagsToResource",
+        "ssm:RemoveTagsFromResource"
+      ],
+      "Resource": "arn:aws:ssm:us-east-1:123456789012:parameter/cdk-bootstrap/*"
+    },
+    {
+      "Sid": "CDKBootstrapKMS",
+      "Effect": "Allow",
+      "Action": [
+        "kms:CreateKey",
+        "kms:CreateAlias",
+        "kms:DeleteAlias",
+        "kms:DescribeKey",
+        "kms:GetKeyPolicy",
+        "kms:PutKeyPolicy",
+        "kms:ListKeys",
+        "kms:ListAliases",
+        "kms:TagResource",
+        "kms:ScheduleKeyDeletion"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "CDKBootstrapIAM",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:DeletePolicy",
+        "iam:GetPolicy",
+        "iam:GetPolicyVersion",
+        "iam:CreatePolicyVersion",
+        "iam:DeletePolicyVersion",
+        "iam:ListPolicyVersions",
+        "iam:TagRole",
+        "iam:UntagRole"
+      ],
+      "Resource": [
+        "arn:aws:iam::123456789012:role/cdk-hnb659fds-*",
+        "arn:aws:iam::123456789012:policy/cdk-hnb659fds-*"
+      ]
+    }
+  ]
+}

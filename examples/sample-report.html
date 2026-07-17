@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiro Analytics - Weekly Report (Sample)</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --primary-light: #e8f0fe;
+            --success: #34a853;
+            --warning: #fbbc04;
+            --danger: #ea4335;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --gray-800: #343a40;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: var(--gray-800);
+            background: var(--gray-100);
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, var(--primary), #1557b0);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        header h1 { font-size: 1.8em; margin-bottom: 8px; }
+        header .subtitle { opacity: 0.9; font-size: 1.1em; }
+        header .period { 
+            margin-top: 12px; 
+            background: rgba(255,255,255,0.15); 
+            display: inline-block; 
+            padding: 4px 12px; 
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 16px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        nav a:hover { text-decoration: underline; }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .kpi-card .value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .kpi-card .label {
+            font-size: 0.85em;
+            color: var(--gray-600);
+            margin-top: 4px;
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.3em;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+        th { background: var(--gray-100); font-weight: 600; color: var(--gray-800); }
+        tr:hover { background: var(--primary-light); }
+
+        /* Bar charts (CSS only) */
+        .bar-container { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+        .bar-label { min-width: 120px; font-size: 0.85em; }
+        .bar {
+            height: 24px;
+            background: linear-gradient(90deg, var(--primary), #4a9df8);
+            border-radius: 4px;
+            transition: width 0.3s;
+            min-width: 2px;
+        }
+        .bar-value { font-size: 0.8em; color: var(--gray-600); min-width: 40px; }
+
+        /* Progress */
+        .progress-bg {
+            background: var(--gray-200);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .progress-low { background: var(--success); }
+        .progress-mid { background: var(--warning); }
+        .progress-high { background: var(--danger); }
+
+        /* AI Analysis */
+        .ai-analysis {
+            background: linear-gradient(135deg, #f0f4ff, #e8f0fe);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+        .ai-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            margin-bottom: 12px;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 500;
+            margin: 2px;
+        }
+        .tag-code { background: #e3f2fd; color: #1565c0; }
+        .tag-infra { background: #fce4ec; color: #c62828; }
+        .tag-frontend { background: #e8f5e9; color: #2e7d32; }
+        .tag-testing { background: #fff3e0; color: #e65100; }
+        .tag-db { background: #f3e5f5; color: #6a1b9a; }
+        .tag-config { background: #e0f7fa; color: #00695c; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray-600);
+            font-size: 0.85em;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            table { font-size: 0.8em; }
+            th, td { padding: 6px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>📊 Kiro Analytics Report</h1>
+            <div class="subtitle">Team Usage &amp; Adoption Analysis</div>
+            <div class="period">📅 Weekly: Jul 7 – Jul 12, 2026</div>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="#kpis">KPIs</a>
+            <a href="#top10">Top 10</a>
+            <a href="#categories">Categories</a>
+            <a href="#intents">Intents</a>
+            <a href="#models">Models</a>
+            <a href="#detail">Detail</a>
+            <a href="#inactive">Inactive</a>
+            <a href="#ai-analysis">AI Analysis</a>
+            <a href="#samples">Samples</a>
+            <a href="#recommendations">Recommendations</a>
+        </nav>
+
+        <!-- KPIs -->
+        <section id="kpis">
+            <h2>📈 Key Performance Indicators</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="value">18</div>
+                    <div class="label">Active Users</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">4,521</div>
+                    <div class="label">Total Credits Used</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">8,934</div>
+                    <div class="label">Total Messages</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">342</div>
+                    <div class="label">Conversations</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">1,245</div>
+                    <div class="label">AI Code Lines</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value">78%</div>
+                    <div class="label">Team Adoption</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top 10 -->
+        <section id="top10">
+            <h2>🏆 Top 10 Users by Credits</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Credits Used</th>
+                        <th>Monthly %</th>
+                        <th>Messages</th>
+                        <th>Conversations</th>
+                        <th>Days Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Sarah Chen</td><td>632.59</td><td><div class="progress-bg"><div class="progress-fill progress-mid" style="width:79%"></div></div>79%</td><td>1,612</td><td>29</td><td>5</td></tr>
+                    <tr><td>2</td><td>Marcus Rivera</td><td>597.45</td><td><div class="progress-bg"><div class="progress-fill progress-mid" style="width:63%"></div></div>63%</td><td>606</td><td>36</td><td>5</td></tr>
+                    <tr><td>3</td><td>Alex Kim</td><td>478.21</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:48%"></div></div>48%</td><td>892</td><td>24</td><td>5</td></tr>
+                    <tr><td>4</td><td>Emily Torres</td><td>412.30</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:41%"></div></div>41%</td><td>756</td><td>18</td><td>4</td></tr>
+                    <tr><td>5</td><td>David Park</td><td>389.15</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:39%"></div></div>39%</td><td>534</td><td>22</td><td>5</td></tr>
+                    <tr><td>6</td><td>Lisa Wang</td><td>321.80</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:32%"></div></div>32%</td><td>445</td><td>15</td><td>4</td></tr>
+                    <tr><td>7</td><td>James Miller</td><td>298.44</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:30%"></div></div>30%</td><td>387</td><td>12</td><td>4</td></tr>
+                    <tr><td>8</td><td>Ana Morales</td><td>265.63</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:27%"></div></div>27%</td><td>312</td><td>21</td><td>3</td></tr>
+                    <tr><td>9</td><td>Ryan Cooper</td><td>187.90</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:19%"></div></div>19%</td><td>245</td><td>9</td><td>3</td></tr>
+                    <tr><td>10</td><td>Sofia Reyes</td><td>122.41</td><td><div class="progress-bg"><div class="progress-fill progress-low" style="width:12%"></div></div>12%</td><td>196</td><td>11</td><td>4</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Categories -->
+        <section id="categories">
+            <h2>📂 Prompt Categories</h2>
+            <div class="bar-container"><span class="bar-label">Code</span><div class="bar" style="width:35%"></div><span class="bar-value">142</span></div>
+            <div class="bar-container"><span class="bar-label">Configuration</span><div class="bar" style="width:22%"></div><span class="bar-value">89</span></div>
+            <div class="bar-container"><span class="bar-label">Frontend</span><div class="bar" style="width:18%"></div><span class="bar-value">73</span></div>
+            <div class="bar-container"><span class="bar-label">Database</span><div class="bar" style="width:10%"></div><span class="bar-value">41</span></div>
+            <div class="bar-container"><span class="bar-label">Infrastructure</span><div class="bar" style="width:8%"></div><span class="bar-value">32</span></div>
+            <div class="bar-container"><span class="bar-label">Testing</span><div class="bar" style="width:5%"></div><span class="bar-value">20</span></div>
+            <div class="bar-container"><span class="bar-label">Documentation</span><div class="bar" style="width:3%"></div><span class="bar-value">12</span></div>
+            <div class="bar-container"><span class="bar-label">Other</span><div class="bar" style="width:4%"></div><span class="bar-value">15</span></div>
+        </section>
+
+        <!-- Intents -->
+        <section id="intents">
+            <h2>🎯 Intent Distribution</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="value" style="color: var(--success);">68%</div>
+                    <div class="label">Do (Code Generation)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value" style="color: var(--primary);">24%</div>
+                    <div class="label">Chat (Discussion)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="value" style="color: var(--warning);">8%</div>
+                    <div class="label">Spec (Specification)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Models -->
+        <section id="models">
+            <h2>🤖 AI Models Used</h2>
+            <div class="bar-container"><span class="bar-label">Auto</span><div class="bar" style="width:82%"></div><span class="bar-value">7,326</span></div>
+            <div class="bar-container"><span class="bar-label">Claude Sonnet 4</span><div class="bar" style="width:12%"></div><span class="bar-value">1,071</span></div>
+            <div class="bar-container"><span class="bar-label">Claude Sonnet 5</span><div class="bar" style="width:6%"></div><span class="bar-value">537</span></div>
+        </section>
+
+        <!-- Detail Table -->
+        <section id="detail">
+            <h2>📋 User Detail</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Credits</th>
+                            <th>Monthly %</th>
+                            <th>Messages</th>
+                            <th>Conversations</th>
+                            <th>AI Lines</th>
+                            <th>Days</th>
+                            <th>Clients</th>
+                            <th>Top Categories</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Sarah Chen</td><td>632.59</td><td>79%</td><td>1,612</td><td>29</td><td>57</td><td>5</td><td>IDE, CLI</td><td><span class="tag tag-config">Config</span><span class="tag tag-frontend">Frontend</span></td></tr>
+                        <tr><td>Marcus Rivera</td><td>597.45</td><td>63%</td><td>606</td><td>36</td><td>89</td><td>5</td><td>IDE</td><td><span class="tag tag-code">Code</span><span class="tag tag-frontend">Frontend</span></td></tr>
+                        <tr><td>Alex Kim</td><td>478.21</td><td>48%</td><td>892</td><td>24</td><td>124</td><td>5</td><td>IDE</td><td><span class="tag tag-code">Code</span><span class="tag tag-db">Database</span></td></tr>
+                        <tr><td>Emily Torres</td><td>412.30</td><td>41%</td><td>756</td><td>18</td><td>67</td><td>4</td><td>IDE</td><td><span class="tag tag-infra">Infra</span><span class="tag tag-config">Config</span></td></tr>
+                        <tr><td>David Park</td><td>389.15</td><td>39%</td><td>534</td><td>22</td><td>201</td><td>5</td><td>IDE, CLI</td><td><span class="tag tag-code">Code</span><span class="tag tag-testing">Testing</span></td></tr>
+                        <tr><td>Lisa Wang</td><td>321.80</td><td>32%</td><td>445</td><td>15</td><td>95</td><td>4</td><td>IDE</td><td><span class="tag tag-frontend">Frontend</span><span class="tag tag-code">Code</span></td></tr>
+                        <tr><td>James Miller</td><td>298.44</td><td>30%</td><td>387</td><td>12</td><td>43</td><td>4</td><td>IDE</td><td><span class="tag tag-config">Config</span><span class="tag tag-infra">Infra</span></td></tr>
+                        <tr><td>Ana Morales</td><td>265.63</td><td>27%</td><td>312</td><td>21</td><td>78</td><td>3</td><td>IDE</td><td><span class="tag tag-code">Code</span><span class="tag tag-config">Config</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Inactive -->
+        <section id="inactive">
+            <h2>😴 Inactive Users (0 credits this week)</h2>
+            <table>
+                <thead>
+                    <tr><th>User</th><th>Email</th><th>Last Active</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tom Wilson</td><td>twilson@company.com</td><td>Jun 28, 2026</td><td style="color: var(--warning);">⚠️ 2 weeks inactive</td></tr>
+                    <tr><td>Karen Lee</td><td>klee@company.com</td><td>Jun 15, 2026</td><td style="color: var(--danger);">🔴 1 month inactive</td></tr>
+                    <tr><td>Mike Johnson</td><td>mjohnson@company.com</td><td>May 20, 2026</td><td style="color: var(--danger);">🔴 2 months inactive</td></tr>
+                    <tr><td>Rachel Adams</td><td>radams@company.com</td><td>Never</td><td style="color: var(--gray-600);">⬜ Never used Kiro</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- AI Analysis -->
+        <section id="ai-analysis">
+            <h2>🧠 AI Analysis</h2>
+            <div class="ai-analysis">
+                <span class="ai-badge">🤖 Claude Haiku 4.5</span>
+                <p><strong>Summary:</strong> The team shows strong Kiro adoption with 78% of enabled users actively using the tool this week. Usage patterns indicate a healthy mix of code generation (68%) and exploratory chat (24%).</p>
+                <br>
+                <p><strong>Key Findings:</strong></p>
+                <ul style="margin: 8px 0 8px 20px;">
+                    <li>Top users are leveraging Kiro for configuration management and frontend development, suggesting complex project setups.</li>
+                    <li>The CLI adoption (3 users) indicates power users integrating Kiro into automation workflows.</li>
+                    <li>Average credit utilization is 38% of the 1,000 monthly limit — room for increased adoption.</li>
+                    <li>High conversation-to-message ratio (26 msgs/conv avg) indicates deep, multi-turn interactions.</li>
+                </ul>
+                <br>
+                <p><strong>Trends:</strong> Week-over-week credit usage increased 12%, driven primarily by the Configuration and Frontend categories. The team appears to be in an active sprint phase.</p>
+            </div>
+        </section>
+
+        <!-- Samples -->
+        <section id="samples">
+            <h2>💬 Prompt Samples</h2>
+            <table>
+                <thead>
+                    <tr><th>User</th><th>Category</th><th>Intent</th><th>Prompt (truncated)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Sarah Chen</td><td><span class="tag tag-config">Config</span></td><td>do</td><td>Create a Docker Compose file with PostgreSQL, Redis, and the application service with health checks...</td></tr>
+                    <tr><td>Marcus Rivera</td><td><span class="tag tag-frontend">Frontend</span></td><td>do</td><td>Build a responsive data table component with sorting, filtering, and pagination using React and...</td></tr>
+                    <tr><td>Alex Kim</td><td><span class="tag tag-db">Database</span></td><td>do</td><td>Write a migration script to add indexes on the orders table for the customer_id and created_at...</td></tr>
+                    <tr><td>David Park</td><td><span class="tag tag-testing">Testing</span></td><td>do</td><td>Generate unit tests for the PaymentService class covering all edge cases including timeout...</td></tr>
+                    <tr><td>Emily Torres</td><td><span class="tag tag-infra">Infra</span></td><td>spec</td><td>Design a CDK stack for a multi-AZ deployment with auto-scaling, load balancer, and RDS with...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Recommendations -->
+        <section id="recommendations">
+            <h2>💡 Recommendations</h2>
+            <div style="padding: 16px;">
+                <p><strong>1. Onboarding inactive users:</strong> Schedule short 15-minute demos for Tom Wilson and Karen Lee, focusing on their specific tech stacks (Java/Spring and React respectively).</p>
+                <br>
+                <p><strong>2. Increase CLI adoption:</strong> Share a team guide on Kiro CLI integration with CI/CD pipelines — only 17% of active users are leveraging the CLI.</p>
+                <br>
+                <p><strong>3. Encourage spec usage:</strong> Only 8% of interactions use the spec intent. Promote spec-driven development for new features to improve code quality.</p>
+                <br>
+                <p><strong>4. Monitor high-usage users:</strong> Sarah Chen (79%) and Marcus Rivera (63%) are approaching monthly limits. Consider Kiro Pro Enterprise for the team if this trend continues.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>Generated by <strong>Kiro Analytics Pipeline</strong> • Jul 17, 2026 at 7:00 AM</p>
+            <p>Pipeline execution: weekly_2026-07-07 • Duration: 12.4s • Powered by Amazon Bedrock</p>
+        </footer>
+    </div>
+</body>
+</html>

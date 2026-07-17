@@ -1,0 +1,136 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DynamoDB",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:DeleteTable",
+        "dynamodb:DescribeTable",
+        "dynamodb:UpdateTable",
+        "dynamodb:DescribeContinuousBackups",
+        "dynamodb:UpdateContinuousBackups",
+        "dynamodb:ListTables",
+        "dynamodb:TagResource",
+        "dynamodb:UntagResource",
+        "dynamodb:ListTagsOfResource",
+        "dynamodb:DescribeTimeToLive",
+        "dynamodb:UpdateTimeToLive"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:us-east-1:123456789012:table/kiro-analytics-*"
+      ]
+    },
+    {
+      "Sid": "DynamoDBList",
+      "Effect": "Allow",
+      "Action": "dynamodb:ListTables",
+      "Resource": "*"
+    },
+    {
+      "Sid": "SNS",
+      "Effect": "Allow",
+      "Action": [
+        "sns:CreateTopic",
+        "sns:DeleteTopic",
+        "sns:GetTopicAttributes",
+        "sns:SetTopicAttributes",
+        "sns:Subscribe",
+        "sns:Unsubscribe",
+        "sns:ListTopics",
+        "sns:ListSubscriptionsByTopic",
+        "sns:TagResource"
+      ],
+      "Resource": [
+        "arn:aws:sns:us-east-1:123456789012:kiro-analytics-*"
+      ]
+    },
+    {
+      "Sid": "SNSList",
+      "Effect": "Allow",
+      "Action": "sns:ListTopics",
+      "Resource": "*"
+    },
+    {
+      "Sid": "EventBridge",
+      "Effect": "Allow",
+      "Action": [
+        "events:PutRule",
+        "events:DeleteRule",
+        "events:DescribeRule",
+        "events:PutTargets",
+        "events:RemoveTargets",
+        "events:ListRules",
+        "events:ListTargetsByRule",
+        "events:TagResource"
+      ],
+      "Resource": [
+        "arn:aws:events:us-east-1:123456789012:rule/kiro-analytics-*",
+        "arn:aws:events:us-east-1:123456789012:rule/KiroAnalytics*"
+      ]
+    },
+    {
+      "Sid": "EventBridgeList",
+      "Effect": "Allow",
+      "Action": "events:ListRules",
+      "Resource": "*"
+    },
+    {
+      "Sid": "CloudFront",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateDistribution",
+        "cloudfront:DeleteDistribution",
+        "cloudfront:GetDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:UpdateDistribution",
+        "cloudfront:ListDistributions",
+        "cloudfront:TagResource",
+        "cloudfront:CreateOriginAccessControl",
+        "cloudfront:DeleteOriginAccessControl",
+        "cloudfront:GetOriginAccessControl",
+        "cloudfront:UpdateOriginAccessControl",
+        "cloudfront:ListOriginAccessControls",
+        "cloudfront:CreateFunction",
+        "cloudfront:DeleteFunction",
+        "cloudfront:DescribeFunction",
+        "cloudfront:PublishFunction",
+        "cloudfront:UpdateFunction"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IAMForPipeline",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:GetRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:TagRole",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": [
+        "arn:aws:iam::123456789012:role/kiro-analytics-*",
+        "arn:aws:iam::123456789012:role/KiroAnalytics*"
+      ]
+    },
+    {
+      "Sid": "CloudWatchAlarms",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricAlarm",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms"
+      ],
+      "Resource": "arn:aws:cloudwatch:us-east-1:123456789012:alarm:kiro-analytics-*"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Testing
+.pytest_cache/
+.hypothesis/
+htmlcov/
+.coverage
+
+# AWS CDK
+cdk.out/
+
+# Reports (generados por el script legacy)
+reports/
+
+# Environment variables
+.env
+.env.local
+
+# Sensitive files — never commit real roster or session data
+kiro-users-dev.csv
+*-session.json
+
+# Archivos de ejecuciones Step Functions
+execution-*
+executio-*
